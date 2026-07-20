@@ -483,6 +483,24 @@ export default function Home() {
             <p className="text-base leading-relaxed" style={{ color: sectionColors.chiSiamo.text || pageColors.mutedText }}>
               {(config as any).sezioneChiSiamo?.paragrafo2 || "Ogni piatto è preparato con ingredienti selezionati e una presentazione che valorizza l'esperienza del cliente, dalla prima accoglienza fino all'ultimo boccone."}
             </p>
+            <h3 className="mt-4 font-display text-xl uppercase tracking-[0.2em]" style={{ color: sectionColors.chiSiamo.title || pageColors.accent }}>
+              {(config as any).sezioneChiSiamo?.titoloAsporto || "Da Asporto"}
+            </h3>
+            <p className="mt-4 text-base leading-relaxed" style={{ color: sectionColors.chiSiamo.text || pageColors.mutedText }}>
+              {(config as any).sezioneChiSiamo?.paragrafo3 || "Dalle fritture di pesce croccanti e freschissime gustate vista mare, ai nostri famosi hamburger di manzo 100% selezionato, fino alle specialità alla griglia e ai cicchetti per l'aperitivo: che tu sia a Udine o a Trieste, da noi trovi sempre gusto autentico, porzioni generose e un'accoglienza col sorriso."}
+            </p>
+            <a
+              href={(config as any).sezioneChiSiamo?.linkUdine || "https://lovestreetfoodud.netlify.app"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display mt-4 inline-flex px-6 py-3 text-[0.99rem] uppercase tracking-[0.25em] transition-colors duration-300"
+              style={{
+                color: sectionColors.chiSiamo.background || pageColors.background,
+                backgroundColor: sectionColors.chiSiamo.title || pageColors.accent,
+              }}
+            >
+              {(config as any).sezioneChiSiamo?.testoLinkUdine || "Scopri a Udine!"}
+            </a>
           </motion.div>
 
           <motion.div

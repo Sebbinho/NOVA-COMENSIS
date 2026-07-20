@@ -87,10 +87,14 @@ const sitoConfig = {
   // Sezione Chi Siamo
   sezioneChiSiamo: {
     preTitolo: "La Nostra Location",
-    titoloPrincipale: "A Barcola Vista Mare",
+    titoloPrincipale: "A Barcola Vista Mare...",
     testoEvidenziato: "",
     paragrafo1: "Situato all'inizio di Barcola, Love Street Food Trieste è il punto di riferimento per gustare frittura di pesce fresca e street food di qualità in una location unica.",
     paragrafo2: "Tutti i nostri prodotti di carne sono preparati con manzo 100% selezionato, macinato e condito direttamente nella nostra cucina. Le nostre fritture sono perfette da gustare al chiosco, al parco o da asporto.",
+    paragrafo3: "Dalle fritture di pesce croccanti e freschissime gustate vista mare, ai nostri famosi hamburger, fino alle specialità alla griglia e le tartine per l'aperitivo: che tu sia a Udine o a Trieste, da noi trovi sempre gusto autentico, porzioni generose e un'accoglienza col sorriso.",
+    titoloAsporto: "...Ma non solo!",
+    testoLinkUdine: "Scoprici a Udine!",
+    linkUdine: "https://lovestreetfoodud.netlify.app",
   },
 
   // Sezione Menu
