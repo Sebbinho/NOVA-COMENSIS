@@ -78,17 +78,20 @@ export default function HomePage() {
 
   // Compute marquee duration dynamically so the full set scrolls at a consistent speed
   React.useEffect(() => {
-    const marqueeElement = marqueeRef.current;
-    if (!marqueeElement) return;
+    const marqueeNode = marqueeRef.current;
+    if (!marqueeNode) return;
 
-    const update = () => {
+    function update() {
+      const element = marqueeNode;
+      if (!element) return;
+
       const sponsors = Array.isArray(cfg.sponsorsNova) ? cfg.sponsorsNova : [];
       const baseCount = sponsors.length || 1;
-      const trackWidth = Math.max(1, marqueeElement.scrollWidth / Math.max(2, Math.min(4, baseCount / 4 + 2)));
+      const trackWidth = Math.max(1, element.scrollWidth / Math.max(2, Math.min(4, baseCount / 4 + 2)));
       const pxPerSec = 500;
       const duration = Math.max(20, trackWidth / pxPerSec);
-      marqueeElement.style.setProperty('--marquee-duration', `${duration}s`);
-    };
+      element.style.setProperty('--marquee-duration', `${duration}s`);
+    }
 
     update();
     window.addEventListener('resize', update);
@@ -227,9 +230,9 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center justify-center gap-2 mt-3">
-                  {matches.map((_: any, i: number) => (
+                  {matches.map((matchItem: any, i: number) => (
                     <button
-                      key={i}
+                      key={`${matchItem.id || 'match'}-${i}`}
                       onClick={() => {
                         const el = trackRef.current; if (!el) return; const card = el.children[i] as HTMLElement; el.scrollTo({ left: card.offsetLeft - 8, behavior: 'smooth' });
                       }}
