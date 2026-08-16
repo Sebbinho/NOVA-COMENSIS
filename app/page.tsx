@@ -78,16 +78,18 @@ export default function HomePage() {
 
   // Compute marquee duration dynamically so the full set scrolls at a consistent speed
   React.useEffect(() => {
-    const el = marqueeRef.current;
-    if (!el) return;
-    function update() {
+    const marqueeElement = marqueeRef.current;
+    if (!marqueeElement) return;
+
+    const update = () => {
       const sponsors = Array.isArray(cfg.sponsorsNova) ? cfg.sponsorsNova : [];
       const baseCount = sponsors.length || 1;
-      const trackWidth = Math.max(1, el.scrollWidth / Math.max(2, Math.min(4, baseCount / 4 + 2)));
+      const trackWidth = Math.max(1, marqueeElement.scrollWidth / Math.max(2, Math.min(4, baseCount / 4 + 2)));
       const pxPerSec = 500;
       const duration = Math.max(20, trackWidth / pxPerSec);
-      el.style.setProperty('--marquee-duration', `${duration}s`);
-    }
+      marqueeElement.style.setProperty('--marquee-duration', `${duration}s`);
+    };
+
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
@@ -225,7 +227,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="flex items-center justify-center gap-2 mt-3">
-                  {matches.map((_, i) => (
+                  {matches.map((_: any, i: number) => (
                     <button
                       key={i}
                       onClick={() => {
