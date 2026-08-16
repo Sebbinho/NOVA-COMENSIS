@@ -18,9 +18,9 @@ const sitoConfig = {
 
   // INFORMAZIONI GENERALI
   infoGenerali: {
-    nomeAttivita: "A.S.D. NOVA COMENSIS",
+    nomeAttivita: "NOVA COMENSIS",
     logo: "assets/logo-nova-comensis.png",
-    testoCopyright: "© A.S.D. NOVA COMENSIS",
+    testoCopyright: "© NOVA COMENSIS",
     sitoUrl: "",
     linkMappe: "",
     linkInstagram: "https://www.instagram.com/nova.comensis/",
@@ -88,9 +88,9 @@ const sitoConfig = {
   // Sezione Chi Siamo
   sezioneChiSiamo: {
     preTitolo: "Chi Siamo",
-    titoloPrincipale: "A.S.D. NOVA COMENSIS",
+    titoloPrincipale: "NOVA COMENSIS",
     testoEvidenziato: "",
-    paragrafo1: "L'A.S.D. Nova Comensis nasce dalla passione per lo sport di squadra e dalla voglia di innovare la narrazione calcistica locale. Segui allenamenti, matchday e contenuti esclusivi.",
+    paragrafo1: "Nova Comensis nasce dalla passione per lo sport di squadra e dalla voglia di innovare la narrazione calcistica locale. Segui allenamenti, matchday e contenuti esclusivi.",
     paragrafo2: "",
     paragrafo3: "",
     titoloAsporto: "",
@@ -237,11 +237,10 @@ const sitoConfig = {
   },
   // --- Nova Comensis specific dynamic content (merged from provided data.json)
   teamInfo: {
-    name: "A.S.D. NOVA COMENSIS",
+    name: "NOVA COMENSIS",
     slogan: "La squadra più social di Como",
     foundationDate: "26 Maggio 2025",
-    league: "CSI Calcio a 7 - Serie C Open (Como)",
-    cf: "95150890135",
+    league: "Campionato CSI",
     presidents: ["Claudio Galli", "Lorenzo Ferro"],
     coach: "Casciaro",
     logo: "assets/logo-nova-comensis.png",
@@ -249,12 +248,12 @@ const sitoConfig = {
   heroNova: {
     title: "NOVA COMENSIS",
     subtitle: "La squadra più social di Como",
-    buttonText: "Scopri il Club",
+    buttonText: "Prossima partita",
     bgImage: "assets/hero-bg.png",
   },
   chiSiamoNova: {
     title: "Chi Siamo",
-    description: "L'A.S.D. Nova Comensis nasce dalla passione per lo sport di squadra e dalla voglia di innovare la narrazione calcistica locale. Oltre al campo da calcio a 7 nel campionato CSI, raccontiamo ogni settimana il dietro le quinte, gli allenamenti e lo spogliatoio con contenuti video moderni per la nostra community."
+    description: "Nova Comensis nasce dalla passione per lo sport di squadra e dalla voglia di innovare la narrazione calcistica locale. Oltre al campo da calcio a 7 nel campionato CSI, raccontiamo ogni settimana il dietro le quinte, gli allenamenti e lo spogliatoio con contenuti video moderni per la nostra community."
   },
   prossimePartite: [
     {
@@ -305,7 +304,7 @@ const sitoConfig = {
   },
   // Storia / Fondatori / Notizie (modificabili dall'admin)
   storia: {
-    intro: "L'A.S.D. Nova Comensis è nata dalla voglia di creare una comunità calcistica giovane e appassionata.",
+    intro: "Nova Comensis è nata dalla voglia di creare una comunità calcistica giovane e appassionata.",
     full: "Fondata da un gruppo di amici e appassionati, Nova Comensis unisce la tradizione sportiva locale con nuove idee digitali per raccontare il mondo del calcio amatoriale.",
     heroFoto: "assets/storia/storia-1.png"
   },

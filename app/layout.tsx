@@ -11,37 +11,38 @@ const bodyFont = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.example.com"),
-  title: "Il Tuo Locale | Sito Web Personalizzato",
+  title: "NOVA COMENSIS | Calcio a 7 Como",
   description:
-    "Il sito è ora completamente personalizzabile tramite il file di configurazione centrale.",
+    "Nova Comensis: squadra di calcio a 7 a Como, prossime partite, notizie e contenuti professionali.",
   keywords: [
-    "Ristorante",
-    "Locale",
-    "Menu",
+    "Nova Comensis",
+    "Calcio a 7",
+    "Como",
+    "Serie C",
+    "Partite",
     "Contatti",
-    "Sito Web",
-    "Personalizzato",
+    "Social",
   ],
   openGraph: {
-    title: "Il Tuo Locale",
-    description: "Sito web personalizzato e modulare per il tuo ristorante.",
+    title: "NOVA COMENSIS",
+    description: "Squadra di calcio a 7 a Como: partite, notizie e contenuti social professionali.",
     url: "https://www.example.com",
-    siteName: "Il Tuo Locale",
+    siteName: "NOVA COMENSIS",
     locale: "it_IT",
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1200&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1518604666860-9ed391f76460?q=80&w=1200&auto=format&fit=crop",
         width: 1200,
         height: 630,
-        alt: "Locale personalizzato",
+        alt: "NOVA COMENSIS",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Il Tuo Locale",
-    description: "Sito web personalizzato e modulare per il tuo ristorante.",
+    title: "NOVA COMENSIS",
+    description: "Squadra di calcio a 7 a Como: partite, notizie e contenuti social professionali.",
   },
   alternates: {
     canonical: "https://www.example.com",
@@ -50,28 +51,21 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Restaurant",
-  name: "Il Tuo Locale",
-  image:
-    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1200&auto=format&fit=crop",
-  servesCuisine: ["Italian", "Street Food"],
-  priceRange: "€€",
+  "@type": "SportsTeam",
+  name: "NOVA COMENSIS",
+  sport: "Football",
+  areaServed: "Como",
+  url: "https://www.example.com",
+  sameAs: ["https://www.instagram.com/nova.comensis/"],
+  email: "novacomensis@gmail.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Via del Tuo Locale",
-    addressLocality: "La tua città",
-    postalCode: "00000",
-    addressRegion: "IT",
+    streetAddress: "Via Adamello 18",
+    addressLocality: "Como",
+    postalCode: "22100",
+    addressRegion: "CO",
     addressCountry: "IT",
   },
-  telephone: "+39 000 000 0000",
-  email: "info@iltuolocale.it",
-  sameAs: ["https://instagram.com"],
-  openingHoursSpecification: [
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday"], opens: "08:00", closes: "01:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Friday","Saturday"], opens: "08:00", closes: "02:00" },
-    { "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "17:00", closes: "23:30" },
-  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

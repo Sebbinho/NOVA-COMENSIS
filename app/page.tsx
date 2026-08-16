@@ -50,6 +50,7 @@ export default function HomePage() {
   const [activeNews, setActiveNews] = React.useState<any | null>(null);
   const trackRef = React.useRef<HTMLDivElement | null>(null);
   const marqueeRef = React.useRef<HTMLDivElement | null>(null);
+  const nextMatch = matches[0] || null;
 
   // Normalize hero src to ensure leading slash for public assets
   const rawHero = (cfg.heroNova && (cfg.heroNova.bgImage || cfg.heroNova?.image)) || cfg.slotImmagini?.heroBg || '';
@@ -127,12 +128,15 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--nova-navy)]/70 via-[var(--nova-blue)]/30 to-[var(--nova-navy)]/90" />
 
           <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-end md:justify-between items-start md:items-end h-full">
-            <div className="text-left md:text-left max-w-2xl self-start md:self-auto hero-content">
-              <div className="hero-badge">{cfg.teamInfo?.league || 'Campionato'}</div>
+            <div className="text-left md:text-left max-w-3xl self-start md:self-auto hero-content">
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-white/80 backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-[var(--nova-gold)] shadow-[0_0_20px_rgba(217,177,82,0.8)]" />
+                {cfg.teamInfo?.league || 'Campionato CSI'}
+              </div>
               <img
                 src={cfg.teamInfo?.logo || cfg.slotImmagini.logo}
                 alt={cfg.teamInfo?.name || cfg.infoGenerali.nomeAttivita}
-                className="h-28 w-28 object-contain rounded-full border-4"
+                className="h-24 w-24 md:h-28 md:w-28 object-contain rounded-full border-4 mt-5 shadow-[0_20px_45px_rgba(11,27,54,0.35)]"
                 style={{ borderColor: "var(--nova-gold)" }}
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
@@ -142,16 +146,27 @@ export default function HomePage() {
                   img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
                 }}
               />
-              <h1 className="font-display text-4xl md:text-6xl text-white mt-4 tracking-tight">{cfg.heroNova?.title || cfg.infoGenerali.nomeAttivita}</h1>
-              <p className="font-script text-lg md:text-2xl text-[var(--nova-cyan)] mt-2">{cfg.heroNova?.subtitle || cfg.teamInfo?.slogan}</p>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a href="#chi-siamo" className="inline-block px-6 py-3 rounded-md text-sm font-semibold hero-button" style={{ backgroundColor: "var(--nova-gold)", color: "var(--nova-navy)" }}>{cfg.heroNova?.buttonText || "Scopri"}</a>
-              </div>
-            </div>
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl text-white mt-4 leading-[0.9] tracking-[0.08em]">{cfg.heroNova?.title || cfg.infoGenerali.nomeAttivita}</h1>
+              <p className="font-script text-2xl md:text-4xl text-[var(--nova-cyan)] mt-3 drop-shadow-[0_6px_20px_rgba(115,210,255,0.35)]">{cfg.heroNova?.subtitle || cfg.teamInfo?.slogan}</p>
 
-            <div className="hidden md:block text-right text-sm text-white/80 hero-meta">
-              <p className="font-medium">Fondazione: {cfg.teamInfo?.foundationDate}</p>
-              <p className="mt-1">Campionato: {cfg.teamInfo?.league}</p>
+              <a
+                href="#partite"
+                className="hero-match-cta mt-6 block w-full max-w-xl group"
+                aria-label={nextMatch ? `Vai alla prossima partita contro ${formatVersus(nextMatch)}` : 'Vai alla sezione partite'}
+              >
+                <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/15 p-4 md:p-5 backdrop-blur-sm shadow-[0_18px_45px_rgba(7,26,47,0.35)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_55px_rgba(7,26,47,0.45)]" style={{ background: 'rgba(7, 26, 47, 0.7)' }}>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-white/65">Prossima partita</p>
+                    <p className="mt-2 text-lg md:text-xl font-display text-white leading-none tracking-[0.05em]">
+                      {nextMatch ? formatVersus(nextMatch) : 'NOVA COMENSIS vs Avversario'}
+                    </p>
+                    <p className="mt-2 text-xs md:text-sm text-white/75">{nextMatch ? nextMatch.date : 'Scopri il calendario completo'}</p>
+                  </div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--nova-gold)] text-lg text-[var(--nova-navy)] shadow-[0_12px_30px_rgba(217,177,82,0.45)] transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -176,10 +191,6 @@ export default function HomePage() {
               <p className="mt-2">{cfg.teamInfo?.coach}</p>
             </div>
 
-            <div className="p-4 border rounded" style={{ borderColor: "var(--nova-gold)" }}>
-              <h3 className="font-display text-sm">Codice Fiscale</h3>
-              <p className="mt-2">{cfg.teamInfo?.cf}</p>
-            </div>
           </div>
         </div>
       </section>
@@ -210,9 +221,13 @@ export default function HomePage() {
                 }}>
                   {matches.map((m: any, idx: number) => (
                     <div key={idx} className="match-card">
-                      <div className="text-sm text-white/80">{m.date}</div>
-                      <div className="font-semibold text-2xl mt-2">{formatVersus(m)}</div>
-                      <div className="text-sm mt-1 text-white/70">{m.location}</div>
+                      <div className="text-[10px] uppercase tracking-[0.22em] text-white/70">{m.date}</div>
+                      <div className="mt-4 flex items-center justify-between gap-3">
+                        <span className="match-team match-team--home">{m.sqHOME || 'NOVA COMENSIS'}</span>
+                        <span className="match-vs">vs</span>
+                        <span className="match-team match-team--away">{m.sqAWAY || 'Avversario'}</span>
+                      </div>
+                      <div className="mt-3 text-sm text-white/70">{m.location}</div>
                     </div>
                   ))}
                 </div>
@@ -236,28 +251,28 @@ export default function HomePage() {
                       onClick={() => {
                         const el = trackRef.current; if (!el) return; const card = el.children[i] as HTMLElement; el.scrollTo({ left: card.offsetLeft - 8, behavior: 'smooth' });
                       }}
-                      className={`w-2 h-2 rounded-full ${i === currentMatchIndex ? 'bg-[var(--nova-gold)]' : 'bg-white/30'}`}
+                      className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${i === currentMatchIndex ? 'bg-[var(--nova-gold)] shadow-[0_0_18px_rgba(217,177,82,0.9)] scale-125' : 'bg-white/30 hover:bg-white/55'}`}
                       aria-label={`Vai a ${i + 1}`}
                     />
                   ))}
                 </div>
 
                 <div className="flex justify-center mt-4">
-                  <button className="px-4 py-2 bg-[var(--nova-gold)] text-[var(--nova-navy)] rounded" onClick={() => setExpandedMatches(e => !e)}>{expandedMatches ? 'Chiudi elenco' : 'Apri elenco'}</button>
+                  <button className="match-toggle-btn" onClick={() => setExpandedMatches(e => !e)}>{expandedMatches ? 'Chiudi elenco' : 'Apri elenco'}</button>
                 </div>
               </div>
 
-              {expandedMatches && (
+              <div className={`match-panel ${expandedMatches ? 'is-open' : ''}`}>
                 <div className="mt-4 space-y-3">
                   {matches.map((m: any, idx: number) => (
-                    <div key={idx} className="p-3 rounded bg-white text-[var(--nova-navy)]">
-                      <div className="text-sm text-gray-600">{m.date}</div>
-                      <div className="font-semibold">{formatVersus(m)}</div>
-                      <div className="text-sm text-gray-700">{m.location}</div>
+                    <div key={idx} className="expanded-match-item">
+                      <div className="text-[10px] uppercase tracking-[0.24em] text-[var(--nova-navy)]/60">{m.date}</div>
+                      <div className="mt-2 font-display text-lg tracking-[0.05em] text-[var(--nova-navy)]">{m.sqHOME || 'NOVA COMENSIS'} <span className="mx-2 text-[var(--nova-gold)]">vs</span> {m.sqAWAY || 'Avversario'}</div>
+                      <div className="text-sm text-[var(--nova-navy)]/75">{m.location}</div>
                     </div>
                   ))}
                 </div>
-              )}
+              </div>
             </>
           )}
         </div>
@@ -269,16 +284,16 @@ export default function HomePage() {
           <h2 className="font-display text-2xl mb-4">Notizie</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {(cfg.news || []).map((n: any, idx: number) => (
-              <article key={idx} className="p-4 rounded-md bg-[rgba(1,6,23,0.03)]">
+              <article key={idx} className="news-card">
                 <div className="flex items-start gap-4">
-                  <div className="w-28 h-20 overflow-hidden rounded">
+                  <div className="w-28 h-20 overflow-hidden rounded-lg">
                     <img src={(n.image && n.image.startsWith('/')) ? n.image : '/' + n.image} alt={n.title} className="w-full h-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='400' height='250'><rect fill='#0B1B36' width='100%' height='100%'/><text x='50%' y='50%' fill='#C59B27' font-family='Montserrat, Arial, sans-serif' font-size='16' dominant-baseline='middle' text-anchor='middle'>News</text></svg>`);}}/>
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{n.title}</h3>
-                    <p className="text-sm text-gray-600">{n.date} — {n.excerpt}</p>
-                    <div className="mt-2">
-                      <button className="text-[var(--nova-blue)] underline" onClick={() => setActiveNews(n)}>Leggi</button>
+                  <div className="flex-1">
+                    <h3 className="font-display text-xl leading-none tracking-[0.05em] text-[var(--nova-navy)]">{n.title}</h3>
+                    <p className="mt-2 text-sm text-gray-600">{n.date} — {n.excerpt}</p>
+                    <div className="mt-3">
+                      <button className="news-button" onClick={() => setActiveNews(n)}>Leggi</button>
                     </div>
                   </div>
                 </div>
@@ -353,14 +368,30 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="font-display text-xl mt-2 mb-6">I Fondatori</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(cfg.fondatori || []).map((f: any, idx: number) => (
-              <div key={idx} className="p-6 rounded bg-white text-[var(--nova-navy)] shadow-sm">
-                <div className="w-full h-44 overflow-hidden rounded mb-3"><img src={(f.photo) ? ((f.photo.startsWith('/')) ? f.photo : '/' + f.photo) : '/assets/fondatori/fondatore-1.png'} alt={f.name} className="w-full h-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/assets/fondatori/fondatore-1.png';}}/></div>
-                <h4 className="font-semibold">{f.name}</h4>
-                <div className="text-sm">{f.role}</div>
-                <p className="text-sm mt-2">{f.bio}</p>
-              </div>
-            ))}
+            {(cfg.fondatori || []).map((f: any, idx: number) => {
+              const instaUrl = f.name === 'Claudio Galli'
+                ? 'https://www.instagram.com/claudio_gallii/'
+                : f.name === 'Lorenzo Ferro'
+                  ? 'https://www.instagram.com/_lorenzoferro227_/'
+                  : '';
+
+              return (
+                <a
+                  key={idx}
+                  href={instaUrl || '#'}
+                  target={instaUrl ? '_blank' : undefined}
+                  rel={instaUrl ? 'noreferrer' : undefined}
+                  className={`founder-card ${instaUrl ? 'is-clickable' : ''}`}
+                  aria-label={instaUrl ? `Apri Instagram di ${f.name}` : undefined}
+                >
+                  <div className="w-full h-44 overflow-hidden rounded mb-3"><img src={(f.photo) ? ((f.photo.startsWith('/')) ? f.photo : '/' + f.photo) : '/assets/fondatori/fondatore-1.png'} alt={f.name} className="w-full h-full object-cover" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/assets/fondatori/fondatore-1.png';}}/></div>
+                  <h4 className="font-semibold">{f.name}</h4>
+                  <div className="text-sm">{f.role}</div>
+                  <p className="text-sm mt-2">{f.bio}</p>
+                  {instaUrl && <span className="founder-tag">Instagram</span>}
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -370,7 +401,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="font-display text-xl mb-4">Sponsor</h3>
           <div className="marquee-wrapper">
-            <div className="marquee">
+            <div className="marquee marquee-blue">
               <div className="marquee-track" ref={marqueeRef}>
                 {(() => {
                   const sponsors = Array.isArray(cfg.sponsorsNova) ? cfg.sponsorsNova : [];
@@ -415,10 +446,11 @@ export default function HomePage() {
               <h4 className="font-display text-lg mb-2">Mappa</h4>
               <div className="w-full h-56 rounded overflow-hidden border mb-4" style={{ borderColor: "var(--nova-gold)" }}>
                 <iframe
-                  src={cfg.contattiNova.mapsUrl}
+                  src={cfg.contattiNova.mapsUrl ? `${cfg.contattiNova.mapsUrl.replace('https://maps.google.com/?q=', 'https://www.google.com/maps?q=')}&output=embed` : 'https://www.google.com/maps?q=Via+Adamello+18+Como&z=15&output=embed'}
                   loading="lazy"
                   className="w-full h-full"
                   title="Mappa Centro Sportivo del Tavernola"
+                  allowFullScreen
                 />
               </div>
 
