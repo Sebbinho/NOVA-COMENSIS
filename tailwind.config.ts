@@ -5,10 +5,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        black: "#0A0A0A",
-        gold: "#D9A31A",
-        offwhite: "#F5F2EA",
-        brown: "#3A2415",
+        evergreen: "#355747",
+        parchment: "#fffaf3",
+        rose: "#b75f68",
+        gold: "#c89d50",
       },
       fontFamily: {
         display: ["var(--font-display)", "Oswald", "sans-serif"],

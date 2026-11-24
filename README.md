@@ -1,118 +1,95 @@
-# RETRÒ Schiacciateria Triestina — Sito Web
+# Un dicembre per noi
 
-Sito Next.js 15 (App Router) + TypeScript + TailwindCSS + Framer Motion + Lucide Icons.
+Calendario dell'Avvento interattivo realizzato con Next.js e TypeScript.
 
-## Deploy su Vercel
-
-### Opzione A — Senza terminale (la più semplice)
-
-1. Vai su [vercel.com](https://vercel.com) e crea un account (puoi usare GitHub, GitLab o email).
-2. Carica questa cartella su GitHub:
-   - Crea un nuovo repository su [github.com/new](https://github.com/new) (es. `retro-schiacciateria`)
-   - Su GitHub clicca "uploading an existing file" e carica tutti i file/cartelle di questo progetto
-     (oppure usa GitHub Desktop per fare il push della cartella)
-3. Su Vercel: **Add New → Project**, seleziona il repository appena creato
-4. Vercel rileva automaticamente Next.js — lascia le impostazioni di default
-5. **Se vuoi le recensioni Google funzionanti**, prima di cliccare Deploy
-   apri "Environment Variables" e aggiungi:
-   - `GOOGLE_PLACES_API_KEY` = la tua chiave
-   - `GOOGLE_PLACE_ID` = il tuo Place ID
-   - `NEXT_PUBLIC_GOOGLE_PLACE_ID` = lo stesso Place ID
-6. Clicca **Deploy**. In 1-2 minuti avrai un link pubblico tipo
-   `https://retro-schiacciateria.vercel.app`
-
-### Opzione B — Da terminale (CLI)
+## Avvio in locale
 
 ```bash
-npm install -g vercel
-cd retro-schiacciateria
-vercel
+npm install
+npm run dev
 ```
 
-Segui le istruzioni a schermo (login, nome progetto, ecc.). Per le
-variabili d'ambiente:
+Apri [http://localhost:3000](http://localhost:3000). Il pannello admin è disponibile su
+[http://localhost:3000/adminseba4825/](http://localhost:3000/adminseba4825/).
 
-```bash
-vercel env add GOOGLE_PLACES_API_KEY
-vercel env add GOOGLE_PLACE_ID
-vercel env add NEXT_PUBLIC_GOOGLE_PLACE_ID
-```
+Senza credenziali Supabase, in locale i contenuti vengono salvati in `sitoConfig.json`,
+le foto in `public/uploads/` e le risposte in `data/memory-book.json` (escluso da Git).
+Con Supabase configurato, configurazione, risposte e nuove foto vengono salvate nel cloud.
 
-Poi per andare in produzione:
+## Collegare Supabase
 
-```bash
-vercel --prod
-```
+1. Crea un progetto Supabase e apri il suo **SQL Editor**.
+2. Esegui lo script contenuto in [`supabase/schema.sql`](./supabase/schema.sql).
+3. Copia `.env.example` in `.env.local` e inserisci l'URL del progetto e la chiave
+   **service role** nelle variabili `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.
+4. Riavvia il server locale. Il pannello Admin mostrerà **Supabase collegato**.
+5. Per Vercel, aggiungi le stesse due variabili in **Project Settings → Environment
+   Variables** e fai un nuovo deploy.
 
-### Dominio personalizzato
+La service role key è segreta: usala solo lato server, non inserirla in variabili
+`NEXT_PUBLIC_*` e non committare `.env.local`. Configurazione e ricordi sono protetti
+da Row Level Security e letti/scritti dalle API server-side. Il bucket delle foto è
+pubblico, come lo erano già le foto condivise del calendario.
 
-Una volta deployato, su Vercel vai su **Settings → Domains** e collega
-il tuo dominio (es. `retroxxsettembre.it`), seguendo le istruzioni DNS
-mostrate da Vercel.
+Al primo avvio con Supabase, la configurazione e gli eventuali ricordi esistenti vengono
+importati dall'archivio locale o da Vercel Blob. I vecchi URL delle foto restano validi;
+le nuove foto vengono caricate nel bucket Supabase. Se le variabili non sono presenti,
+il sito continua a usare lo storage locale o Vercel Blob.
 
----
+## Pubblicazione su Vercel
 
-## Come avviarlo in locale
+Supabase è lo storage consigliato per mantenere configurazione, ricordi e foto.
+In alternativa, importa il progetto su Vercel, crea uno storage **Blob** e collegalo:
+Vercel aggiungerà `BLOB_READ_WRITE_TOKEN`. Esegui quindi un nuovo deploy.
 
-1. Estrai questa cartella sul Desktop (es. `retro-schiacciateria`).
-2. Apri il terminale dentro la cartella:
-   ```bash
-   cd retro-schiacciateria
-   ```
-3. Installa le dipendenze:
-   ```bash
-   npm install
-   ```
-4. Avvia il server di sviluppo:
-   ```bash
-   npm run dev
-   ```
-   Apri il browser su [http://localhost:3000](http://localhost:3000)
+Se Supabase non è configurato, su Vercel calendario, ricordi e foto usano Blob. Se
+Supabase è configurato, i dati persistenti usano Supabase; Blob può restare collegato
+per importare i contenuti precedenti. I contenuti e le foto pubbliche sono visibili a
+chiunque abbia il link. `sitoConfig.json` rimane il valore iniziale del progetto; il
+pannello aggiorna l'archivio selezionato senza tentare di modificare i file del deploy.
 
-## Vedere il sito dal telefono (rete locale)
+## Calendario e libro dei ricordi
 
-```bash
-npm run dev:host
-```
+La pagina pubblica offre le schede **Avvento** e **Il Nostro Libro**. Le giornate si
+sbloccano dal 1 al 25 dicembre; da una scheda sbloccata è possibile leggere storia e
+indizio, completare le missioni e salvare testi o foto. Le foto delle missioni vengono
+ridimensionate e compresse nel browser prima del caricamento.
 
-Il terminale mostrerà un indirizzo del tipo `http://192.168.x.x:3000` —
-aprilo dal browser del telefono (stessa rete WiFi). Se non si connette,
-verifica che il firewall di Windows non blocchi la porta 3000.
+Dal 25 dicembre il pulsante nel libro genera un PDF direttamente nel browser, con una
+pagina per ciascun giorno. Se i testi o le immagini di un giorno sono troppo lunghi per
+una pagina, il download segnala quale giornata va accorciata invece di scartare contenuti.
 
-## Recensioni Google (carosello)
+## Uso del pannello
 
-Le recensioni Google si trovano nella sezione "Recensioni Google" e sono
-caricate da `/api/reviews` (Google Places API). Per attivarle:
+- Modifica la dedica e il testo introduttivo.
+- Apri **Altri testi della pagina pubblica** nelle impostazioni generali per modificare
+  le etichette, i simboli/emoji delle schede e delle caselle, i messaggi delle caselle
+  bloccate, la frase finale e i testi del libro PDF.
+- In **Aspetto e colori del sito** puoi cambiare la palette e il percorso dello sfondo
+  (`/sfondo%20sito.png` per l'immagine inclusa in `public/`); la palette viene usata
+  anche nelle pagine del libro PDF. Il campo **Colore delle scritte (testo principale)**
+  corrisponde a `theme.text` in `sitoConfig.json`. I campioni quadrati mostrano il colore
+  attuale accanto a ogni impostazione; l'immagine configurata come sfondo viene mostrata
+  senza filtri cromatici.
+- Attiva **Modalità prova** per aprire tutte le giornate prima di dicembre. In questa
+  modalità i contenuti programmati e i regali già pubblicati sono visibili dal sito:
+  disattivala quando hai finito i test.
+- Seleziona un giorno, aggiungi titolo, messaggio e foto (JPG, PNG, WebP, AVIF o GIF,
+  massimo 10 MB). Carica direttamente la foto già scontornata; per conservare la
+  trasparenza, usa un PNG.
+- Salva per preparare o aggiornare una sorpresa senza mostrarla.
+- Programma tipo, storia, indizio ed eventuali missioni per ogni giorno dall'1 al 25.
+- Per i sondaggi, aggiungi le opzioni una alla volta con **Aggiungi un'opzione**.
+- Quando il regalo è stato ricevuto, premi **Segna come regalo ricevuto**. La foto e il
+  messaggio appariranno nel calendario pubblico quando quel giorno sarà sbloccato.
 
-1. Copia `.env.local.example` in un nuovo file chiamato `.env.local`
-2. Vai su [Google Cloud Console](https://console.cloud.google.com/),
-   crea/seleziona un progetto e abilita **Places API**
-3. Crea una API key e incollala in `GOOGLE_PLACES_API_KEY`
-4. Trova il **Place ID** della tua attività con il
-   [Place ID Finder di Google](https://developers.google.com/maps/documentation/places/web-service/place-id)
-   e incollalo sia in `GOOGLE_PLACE_ID` che in `NEXT_PUBLIC_GOOGLE_PLACE_ID`
-5. Riavvia `npm run dev`
+Le sorprese non ancora pubblicate non vengono incluse nella risposta pubblica del
+calendario. L'indirizzo `/adminseba4825/` non è collegato dalla pagina e viene escluso
+dall'indicizzazione, ma non equivale a una password: chi conosce o indovina il link
+può accedere al pannello.
 
-⚠️ Nota: l'API Google Places restituisce **massimo 5 recensioni** per
-attività (limite imposto da Google, non modificabile). Se non configuri
-le variabili, il sito mostra recensioni di esempio così il design resta
-visibile.
+## Nota sul badge di sviluppo
 
-## Instagram
-
-La sezione "Seguici su Instagram" è un semplice pulsante che porta al
-profilo @retroxxsettembre. Un embed automatico dell'ultimo post
-richiederebbe un account Meta Developer con token da rinnovare
-periodicamente — per ora è stato lasciato fuori per semplicità.
-
-## Note
-
-- Le immagini di hero/menu/galleria sono placeholder da Unsplash.
-  Sostituiscile in `app/page.tsx` (variabili `MENU_CATEGORIES`,
-  `GALLERY_IMAGES` e l'hero) con foto reali di RETRÒ.
-- Il logo è in `public/logo.jpg`.
-- Per la build di produzione:
-  ```bash
-  npm run build
-  npm run start
-  ```
+L'indicatore `N` di Next.js è disattivato. Next.js e Node.js restano necessari per
+servire il sito e le API su Vercel; non vengono mostrati come schermata o contenuto
+del calendario.
